@@ -1,3 +1,5 @@
+"""Parses Chess game data(PGN) into a CSV file."""
+
 import sys
 import csv
 
@@ -14,41 +16,42 @@ fields = [
 
 
 def extract_game_data(fname):
-    rounds = []
-    with open(fname) as f:
-        lines = f.read().strip().split("\n")
-        round = {}
+    """Parses data from a given PGN file."""
+    matches = []
+    with open(fname, encoding="utf-8") as pgn_f:
+        lines = pgn_f.read().strip().split("\n")
+        match = {}
         for line in lines:
             if line.startswith("["):
 
                 if line.startswith("[Event"):
-                    rounds.append(round)
-                    round = {}
+                    matches.append(match)
+                    match = {}
 
                 l = line.replace("[", "").replace("]", "").replace('"', "")
                 l = l.split(" ")
                 if l[0] in fields:
                     if l[0] == "Termination":
-                        round[l[0]] = l[-1]
-                        round["Winner"] = l[1]
+                        match[l[0]] = l[-1]
+                        match["Winner"] = l[1]
                     elif l[0] == "Date":
                         date = l[1].replace(".", "/")
-                        round[l[0]] = date
+                        match[l[0]] = date
                     else:
-                        round[l[0]] = l[1]
+                        match[l[0]] = l[1]
 
-    return rounds
+    return matches
 
 
 if __name__ == "__main__":
-    rounds = extract_game_data(sys.argv[1])
+    game_rounds = extract_game_data(sys.argv[1])
 
-    with open("parsed_game_data.csv", "w") as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+    with open("parsed_game_data.csv", "w", encoding="utf-8") as csv_f:
+        writer = csv.DictWriter(csv_f, fieldnames=fields)
         writer.writeheader()
-        for round in rounds:
-            if round != {}:
-                writer.writerow(round)
+        for game_round in game_rounds:
+            if game_round != {}:
+                writer.writerow(game_round)
 
     print("Done Writing Parsed Data to CSV file.")
 
