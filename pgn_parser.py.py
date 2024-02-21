@@ -1,11 +1,21 @@
 import sys
 import csv
 
-fields = ["WhiteElo", "BlackElo", "TimeControl", "Winner", "Date", "White", "Black", "Termination"]
+fields = [
+    "WhiteElo",
+    "BlackElo",
+    "TimeControl",
+    "Winner",
+    "Date",
+    "White",
+    "Black",
+    "Termination",
+]
+
 
 def extract_game_data(fname):
-    rounds =[]
-    with open (fname) as f:
+    rounds = []
+    with open(fname) as f:
         lines = f.read().strip().split("\n")
         round = {}
         for line in lines:
@@ -26,12 +36,12 @@ def extract_game_data(fname):
                         round[l[0]] = date
                     else:
                         round[l[0]] = l[1]
-            
+
     return rounds
+
 
 if __name__ == "__main__":
     rounds = extract_game_data(sys.argv[1])
-
 
     with open("parsed_game_data.csv", "w") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
@@ -40,7 +50,6 @@ if __name__ == "__main__":
             if round != {}:
                 writer.writerow(round)
 
-    
     print("Done Writing Parsed Data to CSV file.")
 
 # EOF
