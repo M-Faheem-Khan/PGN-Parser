@@ -1,7 +1,11 @@
 # PGN-Parser
+[![Pylint](https://github.com/M-Faheem-Khan/PGN-Parser/actions/workflows/pylint.yml/badge.svg?branch=main)](https://github.com/M-Faheem-Khan/PGN-Parser/actions/workflows/pylint.yml)
+
 Parses PGN Game file to CSV
 
 Chess Profile: [notdankenoughq](https://www.chess.com/stats/overview/notdankenoughq)
+
+
 
 ## How to run?
 - Download your data
